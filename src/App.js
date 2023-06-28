@@ -4,10 +4,14 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AddContact from "./components/AddContact";
 import ContactList from "./components/ContactList";
 import Header from "./components/Header";
+import UserDetail from "./components/User";
+
 // const { v4: uuidv4 } = require('uuid');
 
 function App() {
   const LOCAL_STORAGE_KEY = "contacts";
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchResult, setSearchResult] = useState([]);
   
   //storing data in contacts from localStorage if it is there or we will set it empty array
   const [contacts, setContacts] = useState(JSON.parse(localStorage.getItem(LOCAL_STORAGE_KEY)) || []);
@@ -24,6 +28,20 @@ function App() {
     });
 
     setContacts(newContactList);
+  }
+
+  const searchHandler = (searchTerm) => {
+    setSearchTerm(searchTerm);
+    if(searchTerm !== ""){
+      const newContactList = contacts.filter((contact)=>{
+        return Object.values(contact).join(" ").toLowerCase().includes(searchTerm.toLowerCase());
+      })
+
+      setSearchResult(newContactList);
+    }
+    else{
+      setSearchResult(contacts);
+    }
   }
 
   // We should avoid this method because ye jab bhi call krega to ise empty array milega 1st time and ye use hi set kr dega contacts me is se localStorage se bhi data ud jayega 
@@ -43,8 +61,17 @@ function App() {
       <Header />
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<ContactList contacts = {contacts} getContactId = {deleteContact} />} />
+          <Route 
+            path="/" 
+            element={<ContactList 
+              contacts = { searchTerm.length < 1 ? contacts : searchResult } 
+              getContactId = {deleteContact} 
+              term={searchTerm} 
+              searchKeyWord = {searchHandler}
+            />} 
+          />
           <Route path="/add" element={<AddContact addContactHandler = {addContactHandler} />} />
+          <Route path="/contact/:id" element={<UserDetail />} />
         </Routes>
       </BrowserRouter>
       

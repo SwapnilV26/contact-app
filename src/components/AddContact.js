@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
+import {useNavigate} from "react-router-dom"
 
 const AddContact = (props) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const navigate = useNavigate();
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -12,9 +14,10 @@ const AddContact = (props) => {
     }
     else {
       props.addContactHandler({ name, email });
-      // alert("Your contact added successfully");
+      alert("Your contact added successfully");
       setName("");
       setEmail("");
+      navigate("/");
     }
 
   }
