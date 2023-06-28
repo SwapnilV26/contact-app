@@ -12,7 +12,7 @@ const AddContact = (props) => {
     }
     else {
       props.addContactHandler({ name, email });
-      alert("Your contact added successfully");
+      // alert("Your contact added successfully");
       setName("");
       setEmail("");
     }
