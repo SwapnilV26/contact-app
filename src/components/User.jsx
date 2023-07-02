@@ -1,10 +1,12 @@
-import React from 'react'
+import React, {useContext} from 'react'
 import user from '../assests/user.jpg';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
-const UserDetail = (props) => {
-    console.log(props)
-    // const {name, email} = props.location.state.contact;
+const UserDetail = () => {
+    const { state } = useLocation(); // Extract the state from location
+    const { name, email } = state.contact; // Access the name and email from state
+    // console.log(state);
+    
     return (
         <div className='mt-4 mx-4 lg:mx-96'>
             <Link to="/">
@@ -17,10 +19,12 @@ const UserDetail = (props) => {
                     <img src={user} alt="" width={400} />
                     <div className='mt-2'>
                         <div className='text-lg text-gray-800 font-medium'>
-                            <span className='font-semibold text-gray-900'>Name: </span> Swapnil
+                            <span className='font-semibold text-gray-900'>Name: </span>
+                            {name}
                         </div>
                         <div className='text-lg text-gray-700'>
-                            <span className='font-semibold text-gray-900'>Email: </span>swap20@gmail.com
+                            <span className='font-semibold text-gray-900'>Email: </span>
+                            {email}
                         </div>
                     </div>
                 </div>

@@ -1,11 +1,9 @@
-import React,{useRef} from 'react'
+import React from 'react'
 import ContactCard from './ContactCard';
 import { Link } from 'react-router-dom';
 import{ BsSearch } from "react-icons/bs";
 
 const ContactList = (props) => {
-  const inputEl = useRef("");
-
   const deleteContactHandler = (id) => {
     props.getContactId(id);
   };
@@ -13,10 +11,6 @@ const ContactList = (props) => {
   const renderContactList = props.contacts.map((contact) => {
     return <ContactCard contact={contact} clickHandler={deleteContactHandler} key={contact.id} />
   })
-
-  const getSearchTerm = () => {
-    props.searchKeyWord(inputEl.current.value);
-  }
 
   return (
     <div className='mt-4 mx-4 lg:mx-96'>
@@ -33,17 +27,15 @@ const ContactList = (props) => {
           <BsSearch />
         </div>
         <input 
-          ref={inputEl}
           type="search" 
           id="default-search"
           value={props.term}
-          // we can also use e.target.value
-          onChange={getSearchTerm}
+          onChange={(e)=>props.searchKeyWord(e.target.value)}
           className="block w-full p-3 pl-10 text-base text-gray-900 border border-gray-300 rounded-lg bg-gray-50" placeholder="Search Contacts" 
         />
       </div>
 
-      <div className='shadow-lg px-4 mt-1'>
+      <div className='shadow-lg px-4 mt-2 overflow-y-scroll max-h-[520px]'>
         { renderContactList.length > 0 ? renderContactList : "No Contacts Available" }
       </div>
 
